@@ -1,0 +1,13 @@
+<!-- Welcome page template -->
+{% extends "base.html" %}
+{% block content %}
+<div class="centered">
+    <h2>Welcome, {{username}}!</h2>
+    <br>
+    <a href="/newpost">Make a new post</a>
+    <br>
+    <a href="/logout">Logout</a>
+    <br>
+    <a href="/">Return</a>
+</div>
+{% endblock %}

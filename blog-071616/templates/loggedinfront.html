@@ -1,0 +1,53 @@
+<!-- Feature rich front page template -->
+{% extends "base.html" %}
+{% block content %}
+
+<div class="centered">
+  <em>Logged in as {{u.username}}</em>
+  <br>
+  <div class="error">{{error}}</div>
+  <br>
+  <a href="/newpost">Make a new post</a>
+  <br>
+  <a href="/welcome">Account page</a>
+</div>
+<br>
+<div class="blog-container">
+  {% for post in posts %}
+  <div>
+   <h2>
+     <a href="/{{post.key().id()}}">
+       {{post.subject}}
+     </a>
+      by {{post.author}} {% if post.author == u.username %}(you){% endif %}
+   </h2>
+   <div class="date">
+     {{post.created.strftime("%b %d, %Y")}}
+   </div>
+  </div>
+  <hr>
+  <p>{{post.format()|safe}}</p>
+
+  {% if u %}
+  {% if post.author != u.username %}
+  <br>
+  <form method="post" class="like">
+    <input type="hidden" name="post_id" value="{{post.key().id()}}">
+    <input class="like" type="submit" name="like" value="{% if u.liked and u.post_id_in_liked(post.key().id()) %}Unlike{% else %}like{% endif %}">
+  </form>
+  {% endif %}
+  {% endif %}
+
+  <br>
+  {{post.str_likes()}} Likes, <a href="/{{post.key().id()}}">{{post.comment_len()}} Comments</a>
+
+  {% if post.author == u.username %}
+  <br>
+  <a href="/edit/{{post.key().id()}}">
+    Edit or delete this post
+  </a>
+  {% endif %}
+
+  {% endfor %}
+</div>
+{% endblock %}

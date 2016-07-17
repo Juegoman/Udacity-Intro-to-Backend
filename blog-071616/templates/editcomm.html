@@ -1,0 +1,22 @@
+<!-- Comment editing template -->
+{% extends "base.html" %}
+{% block content %}
+<form method="post">
+    <label>
+        <div>Comment</div>
+        <textarea name="comment">{{comment}}</textarea>
+    </label>
+    <div class="error">{{ error }}</div>
+    <input type="radio" name="intent" value="edit"> edit<br>
+    <input type="radio" name="intent" value="delete"> delete<br>
+    <input type="submit">
+    <br>
+</form>
+<br>
+<br>
+<div class="centered">
+    <a href="/{{post.key().id()}}">
+        Return to post
+    </a>
+</div>
+{% endblock %}

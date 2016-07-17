@@ -1,7 +1,7 @@
-<!-- Post submission template -->
+<!-- post editing template -->
+
 {% extends "base.html" %}
 {% block content %}
-
 <form method="post">
     <label>
         <div>subject</div>
@@ -13,7 +13,10 @@
         <textarea name="content">{{content}}</textarea>
     </label>
     <div class="error">{{ error }}</div>
+    <input type="radio" name="intent" value="edit"> edit<br>
+    <input type="radio" name="intent" value="delete"> delete<br>
     <input type="submit">
+    <br>
 </form>
 <br>
 <br>

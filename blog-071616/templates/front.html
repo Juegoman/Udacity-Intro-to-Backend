@@ -1,14 +1,28 @@
+<!-- Guest front page template -->
 {% extends "base.html" %}
 {% block content %}
 
-<div class="new_post_link"><a href="/newpost">Make a new post!</a></div>
+<div class="centered">
+  <a href="/login">Login to make new posts!</a>
+</div>
 <br>
 <div class="blog-container">
   {% for post in posts %}
-  <div><h2><a href="/{{post.key().id()}}">{{post.subject}}</a></h2><div class="date">{{post.created}}</div></div>
+  <div>
+    <h2>
+      <a href="/{{post.key().id()}}">
+        {{post.subject}}
+      </a>
+       by {{post.author}}
+    </h2>
+    <div class="date">
+      {{post.created.strftime("%b %d, %Y")}}
+    </div>
+  </div>
   <hr>
-  <p>{{post.content}}</p>
+  <p>{{post.format()|safe}}</p>
   <br>
+  {{post.likes}} Likes, <a href="/{{post.key().id()}}">{{post.comment_len()}} Comments</a>
   {% endfor %}
-</div
+</div>
 {% endblock %}

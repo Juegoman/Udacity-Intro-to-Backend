@@ -31,7 +31,6 @@ class ThanksPage(Handler):
 class MainPage(Handler):
     def render_front(self, title="", art="", error=""):
         arts = db.GqlQuery("SELECT * FROM Art ORDER BY created DESC")
-
         self.render("front.html", title = title,
                                   art = art,
                                   error = error,

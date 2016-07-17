@@ -1,9 +1,63 @@
+<!-- Post details template -->
 {% extends "base.html" %}
 {% block content %}
+<div class="centered error">{{error}}</div>
 <div class="blog-container">
-  <div><h2>{{post.subject}}</h2><div class="date">{{post.created}}</div></div>
-  <hr>
-  <p>{{post.content}}</p>
-  <br>
+    <div>
+        <h2>
+            {{post.subject}} by {{post.author}} {% if post.author == u.username %}(you){% endif %}
+        </h2>
+        <div class="date">
+            {{post.created.strftime("%b %d, %Y")}}
+        </div>
+    </div>
+    <hr>
+    <p>{{post.format()|safe}}</p>
+    {% if u %}
+    {% if post.author != u.username %}
+    <br>
+    <form method="post" class="like">
+        <input class="like" type="submit" name="like" value="{% if u.liked and u.post_id_in_liked(post.key().id()) %}Unlike{% else %}like{% endif %}">
+    </form>
+    {% endif %}
+    {% endif %}
+    <br>
+    {{post.likes}} Likes
+    {% if post.author == u.username %}
+    <br>
+    <a href="/edit/{{post.key().id()}}">
+        Edit or delete this post
+    </a>
+    {% endif %}
 </div>
+<br>
+{% if u %}
+<form method="post">
+    <input type="hidden" name="author" value="{{u.username}}">
+    <label>
+        <div>comment</div>
+        <textarea name="comment">{{comment}}</textarea>
+    </label>
+    <div class="error">{{ error }}</div>
+    <input type="submit" name="submit_comment">
+</form>
+{% endif %}
+<div class="centered">
+    {% if post.listify_comments() %}
+    {% for pair in post.listify_comments()[::-1] %}
+
+    <em>{{pair[1]}} said:</em><br>
+    <p>{{pair[2]}}</p>
+    {% if pair[1] == u.username %}
+    <br>
+    <a href="/{{post.key().id()}}/{{pair[0]}}">
+        Edit or delete this comment
+    </a>
+    {% endif %}
+    <br>
+
+    {% endfor %}
+    {% endif %}
+</div>
+<a href="/">Return</a>
 {% endblock %}
